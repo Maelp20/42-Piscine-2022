@@ -1,0 +1,39 @@
+RUSH_01
+
+MAIN -> Si il y a bien 1 argument : on ft_check_entry.
+
+	-> Si la longueur de l'entree fait bien 31 (16 chiffres et 15 espaces en alternance);
+		-> Return 0 : pas d'erreur.
+	-> Sinon, Return 1 ; print Error.
+	
+INIT BOARDS -> Si tout est ok, on initialise 2 tableaux de [4] lignes et [4] colonnes :
+
+	-> Avec Malloc, on cree les 2 tableaux :
+		-> "Entry" pour stocker les arguments d'entree en les convertissant en int;
+		-> "Board" pour stocker la solution du probleme et l'afficher;
+
+	-> On copie le contenu argv[1] d'entree dans "Entry" avec ft_atoi;
+
+FILL BOARDS WITH RECURSIVE FONCTION
+
+-> On tente de resoudre le probleme avec ft_solve : on lui envoie (board, box, entry);
+	-> On va remplir le board box par box en recursive, en verifiant a chaque fois qu'il 		n'y a pas de doublons :
+		-> On commence par remplir la 1ere box avec n = 1, qui va etre incremente;
+		-> On verifie qu'il n'y a pas de doublons avec ft_not_duplicate;
+		-> On verifie que le remplissage n'est pas termine (box == 15);
+			-> Si c'est termine, on va verifier la solution avec ft_soluce_check, 			dont on retourne le resultat au main.
+			-> Sinon, on continue en rappelant ft_solve(board, box + 1, entry) en 			recursif, dans la variable "result".
+
+SOLUCE CHECK -> ft_soluce_check :
+
+	-> On verifie que le remplissage de "board" correspond aux criteres de "entry";
+		-> Pour chaque cote (top, bot, left, right), on verifie que le nombre de 			towers visible depuis chaque point de vue (chaqune des 4 valeurs contenues 			dans un des cotes d'Entry) correspond.		
+			-> Pour cela : on utilise une variable "max" et on compteur "i" : des 			que la valeur stockee dans une box depasse max, c'est qu'une tower de 			plus est visible : dans ce cas, on incremente i;
+			-> A la fin, la valeur de i doit correspondre a la valeur entree sur 				"entry" : i represente le nombre de towers visibles depuis l'entry.
+		-> retour dans ft_solve, qui return le resultat au main.
+MAIN & DISPLAY
+
+	-> Si une solution a ete trouvee, on appelle ft_display_board pour l'afficher.
+	-> Sinon, on affiche le message Error.
+	
+	-> On free les deux tableaux.
